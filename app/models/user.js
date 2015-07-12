@@ -2,7 +2,7 @@
 * @Author: Mehdi-H
 * @Date:   2015-07-12 20:42:05
 * @Last Modified by:   Mehdi-H
-* @Last Modified time: 2015-07-12 20:54:04
+* @Last Modified time: 2015-07-12 20:58:53
 */
 
 /*jslint node: true */
@@ -32,22 +32,30 @@ var UserSchema = new Schema({
 	}
 });
 
-// password hashing
+/*==========  Fonction de hashage du mot de passe utilisateur  ==========*/
+
 UserSchema.pre('save', function(next){
 	var user = this;
 
 	if(!user.isModified('password')){
 		return next();
+	}else{
+		bcrypt.hash(user.password, null, null, function(err,hash){
+			if(err){
+				return next(err);
+			}else{
+				user.password = hash;
+				next();
+			}
+		});
 	}
-
-	bcrypt.hash(user.password, null, null, function(err,hash){
-		if(err){
-			return next(err);
-		}else{
-			user.password = hash;
-			next();
-		}
-	});
 });
+
+/*==========  Fonction custom  ==========*/
+
+UserSchema.methods.comparePassword = function(pwd){
+	var user = this.
+	return bcrypt.compareSync(pwd,user.password);  // on compare le nouveau mot de passe et le mdp de la bdd
+};
 
 module.exports = mongoose.model('User', UserSchema);
