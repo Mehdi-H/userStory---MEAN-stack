@@ -2,7 +2,7 @@
 * @Author: Mehdi-H
 * @Date:   2015-07-12 16:35:42
 * @Last Modified by:   Mehdi-H
-* @Last Modified time: 2015-07-12 18:41:21
+* @Last Modified time: 2015-07-12 19:11:51
 */
 
 /*jslint node: true */
@@ -12,7 +12,8 @@
 var express    = require('express'),
 	bodyParser = require('body-parser'),
 	morgan     = require('morgan'),
-	config     = require('./config');  // fichier config
+	config     = require('./config'),  // fichier config
+	mongoose   = require('mongoose');
 
 /*==========  Instanciation  ==========*/
 var app = express();
@@ -21,6 +22,15 @@ var app = express();
 app.use(bodyParser.urlencoded({extended:true}));  // false ne permet que de parser une string, true pour toute sorte de médias.
 app.use(bodyParser.json());
 app.use(morgan('dev'));
+
+/*==========  Configuration BDD  ==========*/
+mongoose.connect(config.database,function(err){
+	if(err){
+		console.log('Erreur :' + err);
+	}else{
+		console.log('Connecté à la base de données.')
+	}
+});
 
 /*==========  Content  ==========*/
 app.get('*', function(req,res){
