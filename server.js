@@ -2,7 +2,7 @@
 * @Author: Mehdi-H
 * @Date:   2015-07-12 16:35:42
 * @Last Modified by:   Mehdi-H
-* @Last Modified time: 2015-07-12 19:11:51
+* @Last Modified time: 2015-07-12 21:12:36
 */
 
 /*jslint node: true */
@@ -18,19 +18,22 @@ var express    = require('express'),
 /*==========  Instanciation  ==========*/
 var app = express();
 
-/*==========  Middleware  ==========*/
-app.use(bodyParser.urlencoded({extended:true}));  // false ne permet que de parser une string, true pour toute sorte de médias.
-app.use(bodyParser.json());
-app.use(morgan('dev'));
-
 /*==========  Configuration BDD  ==========*/
 mongoose.connect(config.database,function(err){
 	if(err){
 		console.log('Erreur :' + err);
 	}else{
-		console.log('Connecté à la base de données.')
+		console.log('Connecté à la base de données.');
 	}
 });
+
+/*==========  Middleware  ==========*/
+app.use(bodyParser.urlencoded({extended:true}));  // false ne permet que de parser une string, true pour toute sorte de médias.
+app.use(bodyParser.json());
+app.use(morgan('dev'));
+
+var api = require('./app/routes/api')(app,express);
+app.use('/api',api);
 
 /*==========  Content  ==========*/
 app.get('*', function(req,res){

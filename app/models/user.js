@@ -2,7 +2,7 @@
 * @Author: Mehdi-H
 * @Date:   2015-07-12 20:42:05
 * @Last Modified by:   Mehdi-H
-* @Last Modified time: 2015-07-12 20:58:53
+* @Last Modified time: 2015-07-12 21:13:42
 */
 
 /*jslint node: true */
@@ -11,7 +11,7 @@
 /*==========  Pkg node.js  ==========*/
 
 var mongoose = require('mongoose'),
-	bcrypt = require('bcrypt-nodejs');  // pour hasher le pwd;
+	bcrypt   = require('bcrypt-nodejs');  // pour hasher le pwd;
 
 /*==========  Descriptif du schéma de données  ==========*/
 
@@ -54,8 +54,8 @@ UserSchema.pre('save', function(next){
 /*==========  Fonction custom  ==========*/
 
 UserSchema.methods.comparePassword = function(pwd){
-	var user = this.
-	return bcrypt.compareSync(pwd,user.password);  // on compare le nouveau mot de passe et le mdp de la bdd
+	var user = this;
+	return bcrypt.compareSync(pwd, user.password);  // on compare le nouveau mot de passe et le mdp de la bdd
 };
 
 module.exports = mongoose.model('User', UserSchema);
