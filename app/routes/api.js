@@ -2,7 +2,7 @@
 * @Author: Mehdi-H
 * @Date:   2015-07-12 21:01:07
 * @Last Modified by:   Mehdi-H
-* @Last Modified time: 2015-07-13 15:52:48
+* @Last Modified time: 2015-07-13 16:07:30
 */
 
 /*jslint node: true */
@@ -96,10 +96,10 @@ module.exports = function(app, express){
 	});
 
 	// Middleware post-connexion: traitement du token
-	app.use(function(req,res,next){
+	api.use(function(req,res,next){
 		console.log('Une personne tente de se connecter.');
 
-		var token = req.body.token || req.param('token') || req.header['x-access-token'];
+		var token = req.body.token || req.param('token') || req.headers['x-access-token'];
 
 		//existance du token
 		if(token){  // si le token existe...
@@ -120,6 +120,10 @@ module.exports = function(app, express){
 				message: 'Aucun token fourni'
 			});
 		}
+	});
+
+	api.get('/', function(req,res){
+		res.json("Hello World!");
 	});
 
 	return api;
