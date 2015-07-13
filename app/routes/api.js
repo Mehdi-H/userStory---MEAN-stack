@@ -2,7 +2,7 @@
 * @Author: Mehdi-H
 * @Date:   2015-07-12 21:01:07
 * @Last Modified by:   Mehdi-H
-* @Last Modified time: 2015-07-13 17:58:42
+* @Last Modified time: 2015-07-13 18:07:53
 */
 
 /*jslint node: true */
@@ -129,7 +129,10 @@ module.exports = function(app, express){
 	// 	res.json("Hello World!");
 	// });
 	
+	/*==========  API  ==========*/
+	//les routes
 	api.route('/')
+		// ajout de story
 		.post(function(req,res){
 			var story = new Story({
 				creator: req.decoded.id,
@@ -142,6 +145,17 @@ module.exports = function(app, express){
 					return;
 				}else{
 					res.json({message: 'Une nouvelle story a été ajoutée.'});
+				}
+			});
+		})
+		// consulter toutes les stories
+		.get(function(req,res){
+			Story.find({creator: req.decoded.id},function(err,stories){
+				if(err){
+					res.send(err);
+					return;
+				}else{
+					res.json(stories);
 				}
 			});
 		});
