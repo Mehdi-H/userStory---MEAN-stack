@@ -2,7 +2,7 @@
 * @Author: Mehdi-H
 * @Date:   2015-07-12 21:01:07
 * @Last Modified by:   Mehdi-H
-* @Last Modified time: 2015-07-13 15:35:51
+* @Last Modified time: 2015-07-13 15:52:48
 */
 
 /*jslint node: true */
@@ -68,7 +68,8 @@ module.exports = function(app, express){
 		});
 	});
 
-
+	/*==========  Connexion à l'API (POST)  ==========*/
+	
 	api.post('/login', function(req,res){
 		User.findOne({
 			username: req.body.username
@@ -92,6 +93,33 @@ module.exports = function(app, express){
 				}
 			}
 		});
+	});
+
+	// Middleware post-connexion: traitement du token
+	app.use(function(req,res,next){
+		console.log('Une personne tente de se connecter.');
+
+		var token = req.body.token || req.param('token') || req.header['x-access-token'];
+
+		//existance du token
+		if(token){  // si le token existe...
+			jsonWebToken.verify(token, secretKey, function(err,decoded){
+				if(err){
+					res.status(403).send({  // 403 forbidden
+						success: false,
+						message: 'Echec de l\'authentification'
+					});
+				}else{
+					req.decoded = decoded;
+					next();
+				}
+			});
+		}else{  // si le token n'existe pas...
+			res.status(403).send({
+				success: false,
+				message: 'Aucun token fourni'
+			});
+		}
 	});
 
 	return api;
