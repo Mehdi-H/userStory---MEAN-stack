@@ -2,7 +2,7 @@
 * @Author: Mehdi-H
 * @Date:   2015-07-12 21:01:07
 * @Last Modified by:   Mehdi-H
-* @Last Modified time: 2015-07-12 21:09:29
+* @Last Modified time: 2015-07-13 15:17:48
 */
 
 /*jslint node: true */
@@ -19,7 +19,9 @@ module.exports = function(app, express){
 	// router d'express
 	var api = express.Router();
 
-	// récurpération des données d'inscription
+	// POST
+	// récupération des données d'inscription
+	// et sauvegarde du nouvel utilisateur
 	api.post('/signup', function(req,res){
 		var user = new User({
 			name: req.body.name,
@@ -37,6 +39,19 @@ module.exports = function(app, express){
 			}
 		});
 	});	
+
+	// GET
+	// affichage de tous les utilisateurs
+	api.get('/users',function(req,res){
+		User.find({}, function(err,users){
+			if(err){
+				res.send('Erreur: ' + err);
+				return;
+			}else{
+				res.json(users);
+			}
+		});
+	});
 
 	return api;
 };
