@@ -2,7 +2,7 @@
 * @Author: Mehdi-H
 * @Date:   2015-07-12 21:01:07
 * @Last Modified by:   Mehdi-H
-* @Last Modified time: 2015-07-13 17:47:54
+* @Last Modified time: 2015-07-13 17:58:42
 */
 
 /*jslint node: true */
@@ -13,12 +13,13 @@
 var User         = require('../models/user'),
 	config       = require('../../config'),
 	secretKey    = config.secretKey,
-	jsonWebToken = require('jsonwebtoken');
+	jsonWebToken = require('jsonwebtoken'),
+	Story        = require('../models/story');
 
 
 function createToken(user){
 	var token = jsonWebToken.sign({
-		_id: user._id,
+		id: user._id,
 		name: user.name,
 		username: user.username
 	}, secretKey, {
@@ -123,9 +124,27 @@ module.exports = function(app, express){
 		}
 	});
 
-	api.get('/', function(req,res){
-		res.json("Hello World!");
-	});
+	// destination après le middleware analysant le token
+	// api.get('/', function(req,res){
+	// 	res.json("Hello World!");
+	// });
+	
+	api.route('/')
+		.post(function(req,res){
+			var story = new Story({
+				creator: req.decoded.id,
+				content: req.body.content
+			});
+
+			story.save(function(err){
+				if(err){
+					res.send(err);
+					return;
+				}else{
+					res.json({message: 'Une nouvelle story a été ajoutée.'});
+				}
+			});
+		});
 
 	return api;
 };
