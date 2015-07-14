@@ -2,7 +2,7 @@
 * @Author: Mehdi-H
 * @Date:   2015-07-12 21:01:07
 * @Last Modified by:   Mehdi-H
-* @Last Modified time: 2015-07-13 18:07:53
+* @Last Modified time: 2015-07-13 18:10:09
 */
 
 /*jslint node: true */
@@ -159,6 +159,11 @@ module.exports = function(app, express){
 				}
 			});
 		});
+
+	// infos persos
+	api.get('/me',function(req,res){
+		res.json(req.decoded);
+	});
 
 	return api;
 };

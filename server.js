@@ -2,7 +2,7 @@
 * @Author: Mehdi-H
 * @Date:   2015-07-12 16:35:42
 * @Last Modified by:   Mehdi-H
-* @Last Modified time: 2015-07-12 21:12:36
+* @Last Modified time: 2015-07-14 15:54:36
 */
 
 /*jslint node: true */
@@ -32,12 +32,15 @@ app.use(bodyParser.urlencoded({extended:true}));  // false ne permet que de pars
 app.use(bodyParser.json());
 app.use(morgan('dev'));
 
+// indique les fichiers à render, notamment le css et le js
+app.use(express.static(__dirname + '/public'));
+
 var api = require('./app/routes/api')(app,express);
 app.use('/api',api);
 
 /*==========  Content  ==========*/
 app.get('*', function(req,res){
-	res.sendFile(__dirname + '/public/views/index.html');
+	res.sendFile(__dirname + '/public/app/views/index.html');
 });
 
 /*==========  diffusion  ==========*/
