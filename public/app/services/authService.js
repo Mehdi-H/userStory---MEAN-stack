@@ -2,16 +2,17 @@
 * @Author: Mehdi-H
 * @Date:   2015-07-14 16:10:35
 * @Last Modified by:   Mehdi-H
-* @Last Modified time: 2015-07-14 16:59:58
+* @Last Modified time: 2015-07-14 17:07:12
 */
 
 /*jslint node: true */
 'use strict';
 
 angular.module('authService', [])
-
+/*==========  Factory de gestion de l'authentification  ==========*/
 .factory('Auth', function($http, $q, AuthToken){
 
+	// Variable de stockage des méthodes
 	var authFactory = {};
 
 	/*==========  Méthode de Login  ==========*/	
@@ -49,5 +50,24 @@ angular.module('authService', [])
 			return $q.reject({ message: 'Pas de token pour cet utilisateur' });
 		}
 	};
+})
+/*==========  Factory pour traiter le token dans le navigateur  ==========*/
+.factory('AuthToken',function($window){
+
+	var authTokenFactory = {};
+
+	authTokenFactory.getToken = function(){
+		return $window.localStorage.getItem('token');
+	};
+
+	authTokenFactory.setToken = function(token){
+		if(token){
+			$window.localStorage.setItem('token',token);
+		}else{
+			$window.localStorage.removeItem('token');
+		}
+	};
 });
+
+
 
