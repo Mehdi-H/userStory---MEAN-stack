@@ -2,7 +2,7 @@
 * @Author: Mehdi-H
 * @Date:   2015-07-14 16:10:35
 * @Last Modified by:   Mehdi-H
-* @Last Modified time: 2015-07-14 17:07:12
+* @Last Modified time: 2015-07-14 17:20:36
 */
 
 /*jslint node: true */
@@ -50,6 +50,8 @@ angular.module('authService', [])
 			return $q.reject({ message: 'Pas de token pour cet utilisateur' });
 		}
 	};
+
+	return authFactory;
 })
 /*==========  Factory pour traiter le token dans le navigateur  ==========*/
 .factory('AuthToken',function($window){
@@ -67,6 +69,33 @@ angular.module('authService', [])
 			$window.localStorage.removeItem('token');
 		}
 	};
+
+	return authTokenFactory;
+})
+/*==========  AuthInterceptor factory  ==========*/
+.factory('AuthInterceptor', function($q, $location, AuthToken){
+
+	var interceptorFactory = {};
+
+	interceptorFactory.request = function(config){
+		var token = AuthToken.getToken();
+
+		if(token){
+			config.headers['x-access-token'] = token;
+		}
+
+		return config;
+	};
+
+	interceptorFactory.responseError = function(response){
+		if(response.status == 403){  // forbidden
+			$location.path('/login');
+		}
+
+		return $q.reject(response);
+	};
+
+	return interceptorFactory;
 });
 
 
