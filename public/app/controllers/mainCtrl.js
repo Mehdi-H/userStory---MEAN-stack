@@ -2,7 +2,7 @@
 * @Author: Mehdi-H
 * @Date:   2015-07-14 17:22:32
 * @Last Modified by:   Mehdi-H
-* @Last Modified time: 2015-07-14 17:52:24
+* @Last Modified time: 2015-07-16 13:31:07
 */
 
 angular.module('mainCtrl', [])
@@ -14,7 +14,7 @@ angular.module('mainCtrl', [])
 
 	var vm = this;
 
-	vm.loggedIn = Auth.isLogged();
+	vm.loggedIn = Auth.isLoggedIn();
 
 	// Si la route change...
 	$rootScope.$on('$routeChangeStart', function(){
