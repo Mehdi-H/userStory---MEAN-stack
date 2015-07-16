@@ -1,17 +1,32 @@
 <!DOCTYPE html>
 <html lang="fr" ng-app="MyApp">
     <head>
+        <base href="/"></base>
         <meta charset="utf-8">
         <title>User Story</title>
-
+    
+        <!-- Twitter BootStrap -->
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+
+        <!-- Librairies AngularJS -->
         <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.2/angular.min.js"></script>
+        <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.2/angular-route.min.js"></script>
+        
+        <!-- Services AngularJS -->
+        <script type="text/javascript" src="app/services/authService.js"></script>
+
+        <!-- Controllers AngularJS -->
+        <script type="text/javascript" src="app/controllers/mainCtrl.js"></script>
+        
+        <!-- Dépendances AngularJS -->
+        <script type="text/javascript" src="app/app.routes.js"></script>
         <script type="text/javascript" src="app/app.js"></script>
     </head>
     <body>
 
-    <h1>Hello User Story!</h1>
-    <p>{{ 2+2 }}</p>
+    <div ng-view>
+        
+    </div>
 
     </body>
 </html>

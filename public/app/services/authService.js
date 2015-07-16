@@ -2,15 +2,17 @@
 * @Author: Mehdi-H
 * @Date:   2015-07-14 16:10:35
 * @Last Modified by:   Mehdi-H
-* @Last Modified time: 2015-07-14 17:20:36
+* @Last Modified time: 2015-07-14 17:53:09
 */
 
-/*jslint node: true */
-'use strict';
+
 
 angular.module('authService', [])
 /*==========  Factory de gestion de l'authentification  ==========*/
 .factory('Auth', function($http, $q, AuthToken){
+
+	/*jslint node: true */
+	'use strict';
 
 	// Variable de stockage des méthodes
 	var authFactory = {};
@@ -56,6 +58,9 @@ angular.module('authService', [])
 /*==========  Factory pour traiter le token dans le navigateur  ==========*/
 .factory('AuthToken',function($window){
 
+	/*jslint node: true */
+	'use strict';
+
 	var authTokenFactory = {};
 
 	authTokenFactory.getToken = function(){
@@ -74,6 +79,9 @@ angular.module('authService', [])
 })
 /*==========  AuthInterceptor factory  ==========*/
 .factory('AuthInterceptor', function($q, $location, AuthToken){
+
+	/*jslint node: true */
+	'use strict';
 
 	var interceptorFactory = {};
 
