@@ -2,7 +2,7 @@
 * @Author: Mehdi-H
 * @Date:   2015-07-12 16:35:42
 * @Last Modified by:   Mehdi-H
-* @Last Modified time: 2015-07-14 15:54:36
+* @Last Modified time: 2015-07-16 21:22:29
 */
 
 /*jslint node: true */
@@ -17,6 +17,10 @@ var express    = require('express'),
 
 /*==========  Instanciation  ==========*/
 var app = express();
+
+var http = require('http');
+var server = http.createServer(app);
+var io = require('socket.io').listen(server);
 
 /*==========  Configuration BDD  ==========*/
 mongoose.connect(config.database,function(err){
@@ -35,7 +39,7 @@ app.use(morgan('dev'));
 // indique les fichiers à render, notamment le css et le js
 app.use(express.static(__dirname + '/public'));
 
-var api = require('./app/routes/api')(app,express);
+var api = require('./app/routes/api')(app,express,io);
 app.use('/api',api);
 
 /*==========  Content  ==========*/
@@ -44,7 +48,7 @@ app.get('*', function(req,res){
 });
 
 /*==========  diffusion  ==========*/
-app.listen(config.port, function(err){
+server.listen(config.port, function(err){
 	if(err)
 		console.log('Erreur: ' + err);
 	else

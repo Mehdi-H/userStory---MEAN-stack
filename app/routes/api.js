@@ -2,7 +2,7 @@
 * @Author: Mehdi-H
 * @Date:   2015-07-12 21:01:07
 * @Last Modified by:   Mehdi-H
-* @Last Modified time: 2015-07-16 14:36:53
+* @Last Modified time: 2015-07-16 21:27:33
 */
 
 /*jslint node: true */
@@ -30,10 +30,21 @@ function createToken(user){
 }
 
 
-module.exports = function(app, express){
+module.exports = function(app, express, io){
 
 	/*==========  router d'express  ==========*/
 	var api = express.Router();
+
+	api.get('/all_stories', function(req,res){
+		Story.find({}, function(err, stories){
+			if(err){
+				res.send(err);
+				return;
+			}else{
+				res.json(stories);
+			}
+		});
+	});
 
 	/*==========  POST  ==========*/	
 	// récupération des données d'inscription
@@ -145,13 +156,16 @@ module.exports = function(app, express){
 				content: req.body.content
 			});
 
-			story.save(function(err){
+			story.save(function(err, newStory){
 				if(err){
 					res.send(err);
 					return;
-				}else{
-					res.json({message: 'Une nouvelle story a été ajoutée.'});
 				}
+
+				io.emit('story', newStory);
+				console.log(newStory);
+				res.json({message: 'Une nouvelle story a été ajoutée.'});
+				
 			});
 		})
 		// consulter toutes les stories
