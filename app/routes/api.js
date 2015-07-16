@@ -2,7 +2,7 @@
 * @Author: Mehdi-H
 * @Date:   2015-07-12 21:01:07
 * @Last Modified by:   Mehdi-H
-* @Last Modified time: 2015-07-13 18:10:09
+* @Last Modified time: 2015-07-16 14:36:53
 */
 
 /*jslint node: true */
@@ -45,13 +45,19 @@ module.exports = function(app, express){
 			password: req.body.password
 		});
 
+		var token = createToken(user);
+
 		// Sauvegarde des données
 		user.save(function(err){
 			if(err){
 				res.send('Erreur :' + err);
 				return;
 			}else{
-				res.json({message: 'Un nouvel utilisateur a été créé!'});
+				res.json({
+					success: true,
+					message: 'Un nouvel utilisateur a été créé!',
+					token: token
+				});
 			}
 		});
 	});	
@@ -74,7 +80,7 @@ module.exports = function(app, express){
 	api.post('/login', function(req,res){
 		User.findOne({
 			username: req.body.username
-		}).select('password').exec(function(err,user){
+		}).select('name username password').exec(function(err,user){
 			if(err){
 				throw err;
 			}else if(!user){

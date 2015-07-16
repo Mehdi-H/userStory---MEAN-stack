@@ -14,15 +14,38 @@
         
         <!-- Services AngularJS -->
         <script type="text/javascript" src="app/services/authService.js"></script>
+        <script type="text/javascript" src="app/services/userService.js"></script>
 
         <!-- Controllers AngularJS -->
         <script type="text/javascript" src="app/controllers/mainCtrl.js"></script>
+        <script type="text/javascript" src="app/controllers/userCtrl.js"></script>
         
         <!-- Dépendances AngularJS -->
         <script type="text/javascript" src="app/app.routes.js"></script>
         <script type="text/javascript" src="app/app.js"></script>
     </head>
-    <body>
+    <body ng-controller="MainController as main">
+
+    <header>
+        <div class="navbar navbar-default">
+            <div class="container">
+                <div class="navbar-header">
+                    <a href="/" class="navbar-brand"><span class="glyphicon glyphicon-book"></span> User Story</a>
+                </div>
+
+                <ul class="nav navbar-nav">
+                    <li><a href="/users"></a></li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+                    <li ng-if="!main.loggedIn"><a href="/login">Se connecter</a></li>
+                    <li ng-if="!main.loggedIn"><a href="/signup">S'inscrire</a></li>
+                    <li ng-if="main.loggedIn"><a href="#">Hello {{ main.user.username }}!</a></li>
+                    <li ng-if="main.loggedIn"><a href="#" ng-click="main.doLogout()">Déconnexion</a></li>
+                </ul>
+            </div>
+        </div>
+    </header>
     
     <main class="container">
         <div ng-view></div>
